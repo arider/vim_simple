@@ -1,15 +1,15 @@
 " local syntax file - set colors on a per-machine basis:
 " vim: tw=0 ts=4 sw=4
 " Vim color file
-" Maintainer:	Ron Aaron <ron@mossbayeng.com>
-" Last Change:	2001 Sep 02
+" Maintainer:	arider
+" Last Change:	2017 Apr 02
 
 hi clear
 set background=dark
 if exists("syntax_on")
   syntax reset
 endif
-let g:colors_name = "koehler"
+let g:colors_name = "gremlin"
 hi Normal		  guifg=white  guibg=black
 hi Scrollbar	  guifg=darkcyan guibg=cyan
 hi Menu			  guifg=black guibg=cyan
@@ -35,7 +35,7 @@ hi Identifier	  term=underline   ctermfg=brown  guifg=#40ffff
 hi Statement	  term=bold  cterm=bold ctermfg=yellow	gui=bold  guifg=#ffff60
 hi PreProc		  term=underline  ctermfg=darkblue	guifg=#ff80ff
 hi Type			  term=underline  cterm=bold ctermfg=lightgreen  gui=bold  guifg=#60ff60
-hi Error		  term=reverse	ctermfg=darkcyan  ctermbg=black  guifg=Red	guibg=Black
+hi Error		  term=reverse	ctermfg=yellow ctermbg=red guifg=Red	guibg=Black
 hi Todo			  term=standout  ctermfg=black	ctermbg=darkcyan  guifg=Blue  guibg=Yellow
 hi link IncSearch		Visual
 hi link String			Constant
