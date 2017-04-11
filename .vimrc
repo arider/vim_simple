@@ -145,7 +145,7 @@ set showmatch           " highlight matching [{()}]a
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " Highlight all occurences of word under cursor.
-autocmd CursorMoved * silent! exe printf('match DiffText /\<%s\>/', expand('<cword>'))
+autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>'))
 
 " Keep the cursor in the center of the window.
 set scrolloff=999
