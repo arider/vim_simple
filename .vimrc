@@ -150,6 +150,15 @@ autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>
 " Keep the cursor in the center of the window.
 set scrolloff=999
 colorscheme gremlin
+
+" Highlight Class and Function names
+syn match    cCustomParen    "(" contains=cParen,cCppParen
+syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+syn match    cCustomScope    "::"
+syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+
+hi link cCustomFunc  Function
+hi link cCustomClass Function
 " }}}
 
 " Search behavior. {{{
@@ -257,6 +266,9 @@ nmap <silent> <Leader>b ]'
 """""""""""""""""""""""""""""""""""""""""""""""""
 " WIPS
 """""""""""""""""""""""""""""""""""""""""""""""""
+
+
+
 " To get the highlight colors.
 " so $VIMRUNTIME/syntax/hitest.vim
 
