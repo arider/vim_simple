@@ -37,13 +37,14 @@ hi PreProc		  term=underline  ctermfg=darkblue	guifg=#ff80ff
 hi Type			  term=underline  cterm=bold ctermfg=lightgreen  gui=bold  guifg=#60ff60
 hi Error		  term=reverse	ctermfg=yellow ctermbg=red guifg=Red	guibg=Black
 hi Todo			  term=standout  ctermfg=black	ctermbg=darkcyan  guifg=Blue  guibg=Yellow
+hi Function       term=bold cterm=bold ctermfg=Green
 hi link IncSearch		Visual
 hi link String			Constant
 hi link Character		Constant
 hi link Number			Constant
 hi link Boolean			Constant
 hi link Float			Number
-hi link Function		Identifier
+"hi link Function		Identifier
 hi link Conditional		Statement
 hi link Repeat			Statement
 hi link Label			Statement
