@@ -99,9 +99,14 @@ augroup configgroup
     autocmd BufEnter *.sh setlocal shiftwidth=2
     autocmd BufEnter *.sh setlocal softtabstop=2
     
+    " Highlight Class and Function names
     " Add function call highlighting (not perfect).
-    autocmd BufEnter * hi link cCustomFunc  Function
-    autocmd BufEnter * hi link cCustomClass Function
+    autocmd BufEnter *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
+    autocmd BufEnter *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+    autocmd BufEnter *.* syn match    cCustomScope    "::"
+    autocmd BufEnter *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+    autocmd BufEnter *.* hi link cCustomFunc  Function
+    autocmd BufEnter *.* hi link cCustomClass Function
 augroup END
 " }}}
 
@@ -155,11 +160,11 @@ autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>
 set scrolloff=999
 colorscheme gremlin
 
-" Highlight Class and Function names
-syn match    cCustomParen    "(" contains=cParen,cCppParen
-syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
-syn match    cCustomScope    "::"
-syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+"" Highlight Class and Function names
+"syn match    cCustomParen    "(" contains=cParen,cCppParen
+"syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+"syn match    cCustomScope    "::"
+"syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
 "
 " hi link cCustomFunc  Function
 " hi link cCustomClass Function
