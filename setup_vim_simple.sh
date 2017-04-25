@@ -6,6 +6,7 @@ apt-get update
 apt-get install -y vim wget git
 
 # Download nice colors.
+mkdir -p ~/.swp
 mkdir -p ~/.vim/colors/
 wget https://raw.githubusercontent.com/arider/vim_simple/master/colors/gremlin.vim -O ~/.vim/colors/gremlin.vim
 wget https://raw.githubusercontent.com/arider/vim_simple/master/.vimrc -O ~/.vimrc

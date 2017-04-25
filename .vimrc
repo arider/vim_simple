@@ -86,6 +86,13 @@ set complete+=t
 
 " }}}
 
+" Tab (space) and indent / fold behavior. {{{
+" --- Tab (space) and indent / fold behavior. ---
+set expandtab
+set tabstop=4
+set shiftwidth=4
+set softtabstop=4
+
 " Language specific filetype settings. {{{
 " --- Language specific filetype settings. ---
 augroup configgroup
@@ -93,6 +100,9 @@ augroup configgroup
     autocmd FileType python setlocal commentstring=#\ %s
     " flake8 on save python file.
     " au BufReadPost *.py call flake8#Flake8()
+    autocmd FileType python setlocal tabstop=4
+    autocmd FileType python setlocal shiftwidth=2
+    autocmd FileType python setlocal softtabstop=2
 
     " Bash
     autocmd BufEnter *.sh setlocal tabstop=2
@@ -107,17 +117,13 @@ augroup configgroup
     autocmd BufEnter *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
     autocmd BufEnter *.* hi link cCustomFunc  Function
     autocmd BufEnter *.* hi link cCustomClass Function
+
+    " Go settings.
+    autocmd FileType go setlocal tabstop=4
+    autocmd FileType go setlocal shiftwidth=4
+    autocmd FileType go setlocal softtabstop=4
 augroup END
 " }}}
-
-" Tab (space) and indent / fold behavior. {{{
-" --- Tab (space) and indent / fold behavior. ---
-set tabstop=4
-set expandtab
-set shiftwidth=4
-set softtabstop=4
-au FileType python setlocal tabstop=4 expandtab shiftwidth=2 softtabstop=2
-au FileType go setlocal tabstop=4 expandtab shiftwidth=4 softtabstop=4
 
 " Minimize code based on indent.
 set foldmethod=indent
@@ -159,6 +165,25 @@ autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>
 " Keep the cursor in the center of the window.
 set scrolloff=999
 colorscheme gremlin
+
+" Hide buffers instead of closing them.
+set hidden
+" Ignore case when searching.
+" set ignorecase
+" Ignore case when search string is all lower.
+set smartcase
+" Use shiftwidth instead of tab width at start of line.
+set smarttab
+
+" Undo history.
+set history=1000
+set undolevels=1000
+" Ignore files like these for path matching.
+set wildignore=*.swp,*.bak,*.pyc,*.class
+" change the terminal's title
+set title
+" set paste / nopaste
+set pastetoggle=<F2>
 
 "" Highlight Class and Function names
 "syn match    cCustomParen    "(" contains=cParen,cCppParen
