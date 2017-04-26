@@ -118,6 +118,14 @@ augroup configgroup
     autocmd BufEnter *.* hi link cCustomFunc  Function
     autocmd BufEnter *.* hi link cCustomClass Function
 
+    autocmd BufWrite *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
+    autocmd BufWrite *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+    autocmd BufWrite *.* syn match    cCustomScope    "::"
+    autocmd BufWrite *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+    autocmd BufWrite *.* hi link cCustomFunc  Function
+    autocmd BufWrite *.* hi link cCustomClass Function
+
+
     " Go settings.
     autocmd FileType go setlocal tabstop=4
     autocmd FileType go setlocal shiftwidth=4
@@ -154,7 +162,6 @@ set showmatch           " highlight matching [{()}]a
 
 " highlight last inserted text
 " nnoremap gV `[v`]
-
 
 " Jump to last position on enter.
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
