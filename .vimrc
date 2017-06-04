@@ -118,13 +118,12 @@ augroup configgroup
     autocmd BufEnter *.* hi link cCustomFunc  Function
     autocmd BufEnter *.* hi link cCustomClass Function
 
-    autocmd BufWrite *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
-    autocmd BufWrite *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
-    autocmd BufWrite *.* syn match    cCustomScope    "::"
-    autocmd BufWrite *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
-    autocmd BufWrite *.* hi link cCustomFunc  Function
-    autocmd BufWrite *.* hi link cCustomClass Function
-
+    autocmd BufWritePost *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
+    autocmd BufWritePost *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+    autocmd BufWritePost *.* syn match    cCustomScope    "::"
+    autocmd BufWritePost *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+    autocmd BufWritePost *.* hi link cCustomFunc  Function
+    autocmd BufWritePost *.* hi link cCustomClass Function
 
     " Go settings.
     autocmd FileType go setlocal tabstop=4
