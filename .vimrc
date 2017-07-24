@@ -304,6 +304,20 @@ nmap <silent> <Leader>d :call DelHLMark()<CR>
 
 nmap <silent> <Leader>f ['
 nmap <silent> <Leader>b ]'
+
+" ############# toggle color current column #############
+
+"nnoremap <Leader>h :set colorcolumn=virtcol('.')<CR>
+function! ToggleHLCol()
+    if &colorcolumn
+        setlocal colorcolumn&
+    else
+        let &colorcolumn=virtcol('.')
+    endif
+endfunction
+
+nnoremap <silent> <Leader>h :call ToggleHLCol()<CR>
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""
