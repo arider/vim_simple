@@ -41,6 +41,7 @@ Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 Plugin 'sjl/gundo.vim'
 Plugin 'ajh17/VimCompletesMe'
+Plugin 'wesQ3/WindowSwap'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
