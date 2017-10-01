@@ -41,6 +41,8 @@ Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 Plugin 'sjl/gundo.vim'
 Plugin 'ajh17/VimCompletesMe'
+Plugin 'tpope/vim-endwise'
+Plugin 'rhysd/vim-crystal'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -129,6 +131,7 @@ augroup configgroup
     autocmd FileType go setlocal tabstop=4
     autocmd FileType go setlocal shiftwidth=4
     autocmd FileType go setlocal softtabstop=4
+
 augroup END
 " }}}
 
@@ -170,7 +173,9 @@ autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>
 
 " Keep the cursor in the center of the window.
 set scrolloff=999
+
 colorscheme gremlin
+
 
 " Hide buffers instead of closing them.
 set hidden
