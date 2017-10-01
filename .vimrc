@@ -43,6 +43,7 @@ Plugin 'sjl/gundo.vim'
 Plugin 'ajh17/VimCompletesMe'
 Plugin 'tpope/vim-endwise'
 Plugin 'rhysd/vim-crystal'
+Plugin 'wesQ3/vim-windowswap'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -255,6 +256,10 @@ nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
 
+" Overwrite windowswap default mappings.
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>q :call WindowSwap#EasyWindowSwap()<CR>
+
 " }}}
 
 " HLMarks {{{
@@ -309,6 +314,20 @@ nmap <silent> <Leader>d :call DelHLMark()<CR>
 
 nmap <silent> <Leader>f ['
 nmap <silent> <Leader>b ]'
+
+" ############# toggle color current column #############
+
+"nnoremap <Leader>h :set colorcolumn=virtcol('.')<CR>
+function! ToggleHLCol()
+    if &colorcolumn
+        setlocal colorcolumn&
+    else
+        let &colorcolumn=virtcol('.')
+    endif
+endfunction
+
+nnoremap <silent> <Leader>h :call ToggleHLCol()<CR>
+
 " }}}
 
 """""""""""""""""""""""""""""""""""""""""""""""""
