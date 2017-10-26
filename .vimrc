@@ -42,6 +42,9 @@ Plugin 'dhruvasagar/vim-prosession'
 Plugin 'sjl/gundo.vim'
 Plugin 'ajh17/VimCompletesMe'
 "Plugin 'wesQ3/WindowSwap'
+Plugin 'unblevable/quick-scope'
+Plugin 'roman/golden-ratio'
+Plugin 'tpope/vim-surround'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
