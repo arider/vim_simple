@@ -41,10 +41,12 @@ Plugin 'tpope/vim-obsession'
 Plugin 'dhruvasagar/vim-prosession'
 Plugin 'sjl/gundo.vim'
 Plugin 'ajh17/VimCompletesMe'
-"Plugin 'wesQ3/WindowSwap'
 Plugin 'unblevable/quick-scope'
 Plugin 'roman/golden-ratio'
 Plugin 'tpope/vim-surround'
+" Plugin 'tpope/vim-endwise'
+" Plugin 'rhysd/vim-crystal'
+Plugin 'wesQ3/vim-windowswap'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -133,6 +135,7 @@ augroup configgroup
     autocmd FileType go setlocal tabstop=4
     autocmd FileType go setlocal shiftwidth=4
     autocmd FileType go setlocal softtabstop=4
+
 augroup END
 " }}}
 
@@ -174,7 +177,9 @@ autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>
 
 " Keep the cursor in the center of the window.
 set scrolloff=999
+
 colorscheme gremlin
+
 
 " Hide buffers instead of closing them.
 set hidden
@@ -253,6 +258,10 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+" Overwrite windowswap default mappings.
+let g:windowswap_map_keys = 0 "prevent default bindings
+nnoremap <silent> <leader>w :call WindowSwap#EasyWindowSwap()<CR>
 
 " }}}
 
