@@ -42,11 +42,14 @@ Plugin 'dhruvasagar/vim-prosession'
 Plugin 'sjl/gundo.vim'
 Plugin 'ajh17/VimCompletesMe'
 Plugin 'unblevable/quick-scope'
+Plugin 'tpope/vim-endwise'
 Plugin 'roman/golden-ratio'
 Plugin 'tpope/vim-surround'
-" Plugin 'tpope/vim-endwise'
 " Plugin 'rhysd/vim-crystal'
 Plugin 'wesQ3/vim-windowswap'
+Plugin 'JuliaLang/julia-vim'
+Plugin 'ap/vim-buftabline'
+
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
