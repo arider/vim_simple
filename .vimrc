@@ -49,6 +49,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'wesQ3/vim-windowswap'
 Plugin 'JuliaLang/julia-vim'
 Plugin 'ap/vim-buftabline'
+Plugin 'godlygeek/tabular'
 
 
 " All of your Plugins must be added before the following line
