@@ -2,8 +2,8 @@ if [ -f .vimrc ]; then
   cp .vimrc .vimrc_old
 fi
 
-apt-get update
-apt-get install -y vim wget git
+#apt-get update
+#apt-get install -y vim wget git
 
 # Download nice colors.
 mkdir -p ~/.swp
