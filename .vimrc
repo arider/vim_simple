@@ -21,79 +21,67 @@ filetype off                  " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " }}}
 
-" Vundle plugins {{{
-" --- Vundel plugins ---
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
+" Plugin management.. {{{
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-" let Vundle manage Vundle, required
-Plugin 'gmarik/Vundle.vim'
-" Plugin 'kien/ctrlp.vim'
-Plugin 'scrooloose/syntastic'
-Plugin 'scrooloose/nerdtree'
-Plugin 'luochen1990/rainbow'
-Plugin 'fatih/vim-go'
-Plugin 'nvie/vim-flake8'
-Plugin 'tpope/vim-obsession'
-Plugin 'dhruvasagar/vim-prosession'
-Plugin 'sjl/gundo.vim'
-Plugin 'ajh17/VimCompletesMe'
-Plugin 'unblevable/quick-scope'
-Plugin 'tpope/vim-endwise'
-Plugin 'roman/golden-ratio'
-Plugin 'tpope/vim-surround'
-" Plugin 'rhysd/vim-crystal'
-Plugin 'wesQ3/vim-windowswap'
-Plugin 'JuliaLang/julia-vim'
-Plugin 'ap/vim-buftabline'
-Plugin 'godlygeek/tabular'
+call plug#begin('~/.vim/plugged')
+    " ### Favorites ###
+    Plug 'junegunn/vim-plug'
+    Plug 'tpope/vim-obsession'
+    Plug 'roman/golden-ratio'
+    Plug 'unblevable/quick-scope'
+    Plug 'ajh17/VimCompletesMe'
+    Plug 'zakj/vim-showmarks'
+    Plug 'luochen1990/rainbow'
+    Plug 'JuliaLang/julia-vim'
 
+    " ### Rare but nice ###
+    Plug 'scrooloose/nerdtree'
+    Plug 'wesQ3/vim-windowswap'
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
+    " Not so sure.
+"    Plug 'sjl/gundo.vim'
+"    Plug 'tpope/vim-endwise'
+"    Plug 'tpope/vim-surround'
+"
+"    TODO: Need to change mappings for this
+"    Plug 'ap/vim-buftabline'
+"    Plug 'godlygeek/tabular'
+call plug#end()
 
 " toggle gundo -- plugin binding.
-nnoremap <leader>u :GundoToggle<CR>
+"nnoremap <leader>u :GundoToggle<CR>
 
-" CtrlP settings
-" order matches top to bottom.
-" let g:ctrlp_match_window = 'bottom,order:ttb'
-" Open files in new buffer.
-" let g:ctrlp_switch_buffer = 0
-" Change the working directory.
-" let g:ctrlp_working_path_mode = 0
-" let g:ctrlp_user_command = 'ag %s -l --nocolor --hidden -g ""'
-" use ag as underlying search for speed.
-" let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-" Nerdtree mapings
+"" Nerdtree mapings
 map <C-n> :NERDTreeToggle<CR>
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
+"""autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 let NERDTreeIgnore = ['\.pyc$', '\.swp$']
 let NERDTreeShowHidden=1
 
 " Set use rainbow
 let g:rainbow_active = 1
 
-" vim-go mappings
-" au FileType go nmap ds <Plug>(go-def-split)
-" au FileType go nmap ss <Plug>(go-implements-split)
-" au FileType go nmap gd <Plug>(go-doc-vertical)
-au FileType go nmap gr <Plug>(go-run)
-au FileType go nmap gt <Plug>(go-test)
-" au FileType go nmap gb <Plug>(go-build)
-" au FileType go nmap gc <Plug>(go-coverage)
-
 " VimCompletesMe settings
-autocmd FileType py,go let b:vcm_tab_complete = 'omni'
-" make it check tags for omni-completion (This is probably redundant -- " vim
-" detaults to using tags).
+autocmd FileType py,go,jl let b:vcm_tab_complete = 'omni'
 set complete+=t
 
+
+" }}}
+
+" Manage session {{{
+let g:session_name = $HOME . '/.vim/sessions/' . join(split(getcwd(), '/') + ['session.vim'], '_')
+function! HandleSession(session_name)
+    if !(filereadable(a:session_name))
+        exe ':Obsess ' . a:session_name
+    else
+        exe ':source ' . a:session_name
+    endif
+endfunction
+au VimEnter * call HandleSession(session_name)
 " }}}
 
 " Tab (space) and indent / fold behavior. {{{
@@ -103,22 +91,20 @@ set tabstop=4
 set shiftwidth=4
 set softtabstop=4
 
+" Minimize code based on indent.
+set foldmethod=indent
+set foldlevel=99
+set foldenable          " enable folding.
+set foldlevelstart=10   " open most folds by default.
+set foldnestmax=10      " 10 nested fold max.
+" space open/closes folds.
+nnoremap <space> za
+
+" }}}
+
 " Language specific filetype settings. {{{
 " --- Language specific filetype settings. ---
 augroup configgroup
-    " Python
-    autocmd FileType python setlocal commentstring=#\ %s
-    " flake8 on save python file.
-    " au BufReadPost *.py call flake8#Flake8()
-    autocmd FileType python setlocal tabstop=4
-    autocmd FileType python setlocal shiftwidth=2
-    autocmd FileType python setlocal softtabstop=2
-
-    " Bash
-    autocmd BufEnter *.sh setlocal tabstop=2
-    autocmd BufEnter *.sh setlocal shiftwidth=2
-    autocmd BufEnter *.sh setlocal softtabstop=2
-    
     " Highlight Class and Function names
     " Add function call highlighting (not perfect).
     autocmd BufEnter *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
@@ -135,40 +121,40 @@ augroup configgroup
     autocmd BufWritePost *.* hi link cCustomFunc  Function
     autocmd BufWritePost *.* hi link cCustomClass Function
 
-    " Go settings.
-    autocmd FileType go setlocal tabstop=4
-    autocmd FileType go setlocal shiftwidth=4
-    autocmd FileType go setlocal softtabstop=4
-
+""    " Julia settings.
+""    autocmd FileType julia
+""        \ let b:endwise_addition = 'end' |
+""        \ let b:endwise_words = 'module,struct,if,else,while,for,elseif'
 augroup END
-" }}}
-
-" Minimize code based on indent.
-set foldmethod=indent
-set foldlevel=99
-set foldenable          " enable folding.
-set foldlevelstart=10   " open most folds by default.
-set foldnestmax=10      " 10 nested fold max.
-" space open/closes folds.
-nnoremap <space> za
 " }}}
 
 " Misc. {{{
 " --- Misc ---
+
 " Store temporary files in a central spot,
 " instead of all over the place:
-syntax on
-set backspace=indent,eol,start
-
 if has('unix')
 	set backupdir=~/.swp
 	set directory=~/.swp
 endif
 
+syntax on
+set backspace=indent,eol,start
+
+colorscheme gremlin
+
 set wildmenu            " visual autocomplete for command menu.
+set wildmode=full     " Need this for the session management trick.
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]a
+set nowrap
+
+set autoindent
+set copyindent
 "set textwidth=79
+
+" " Enable block-wize movements for julia
+" runtime macros/matchit.vim
 
 " highlight last inserted text
 " nnoremap gV `[v`]
@@ -176,21 +162,11 @@ set showmatch           " highlight matching [{()}]a
 " Jump to last position on enter.
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
-" Highlight all occurences of word under cursor.
-autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>'))
-
 " Keep the cursor in the center of the window.
 set scrolloff=999
 
-colorscheme gremlin
-
-
 " Hide buffers instead of closing them.
 set hidden
-" Ignore case when searching.
-" set ignorecase
-" Ignore case when search string is all lower.
-set smartcase
 " Use shiftwidth instead of tab width at start of line.
 set smarttab
 
@@ -203,18 +179,6 @@ set wildignore=*.swp,*.bak,*.pyc,*.class
 set title
 " set paste / nopaste
 set pastetoggle=<F2>
-
-"" Highlight Class and Function names
-"syn match    cCustomParen    "(" contains=cParen,cCppParen
-"syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
-"syn match    cCustomScope    "::"
-"syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
-"
-" hi link cCustomFunc  Function
-" hi link cCustomClass Function
-
-
-
 " }}}
 
 " Search behavior. {{{
@@ -224,6 +188,10 @@ hi SpellBad ctermfg=001 ctermbg=015 guifg=#d75f00 guibg=#d75f00
 hi SpellCap ctermfg=002 ctermbg=007 guifg=#d75f00 guibg=#d75f00
 hi Search cterm=NONE ctermfg=black ctermbg=007
 set incsearch           " search as characters are entered.
+" Ignore case when searching.
+"set ignorecase
+" Ignore case when search string is all lower.
+set smartcase
 " }}}
 
 " Custom keybindings. {{{
@@ -266,64 +234,15 @@ nnoremap <C-H> <C-W><C-H>
 " Overwrite windowswap default mappings.
 let g:windowswap_map_keys = 0 "prevent default bindings
 nnoremap <silent> <leader>w :call WindowSwap#EasyWindowSwap()<CR>
-
 " }}}
 
-" HLMarks {{{
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Make highlighted lines that can be jumped to.
-" Minor tweaks to version here: https://github.com/AT-AT/hlmarks.vim
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" Mark the HL marks automatically
-autocmd BufReadPost * call HLMarks()
+" Highlighting stuff {{{
 
-hi Marks term=reverse ctermfg=0 ctermbg=40 guibg=Grey40
+" Highlight all occurences of word under cursor.
+autocmd CursorMoved * silent! exe printf('match PMenu /\<%s\>/', expand('<cword>'))
 
-function! HLMarks()
-        call clearmatches()
-        let index = char2nr('a')
-        while index < char2nr('z')
-                call matchadd( 'WildMenu', '\%'.line( "'".nr2char(index)).'l')
-"                call matchadd( a:group, '\%'.line( "'".nr2char(index)).'l')
-                let index = index + 1
-        endwhile
-endfunction
-
-function! AddHLMark()
-        let index = char2nr('a')
-        while getpos("'".nr2char(index))[2] != 0
-                let index = index + 1
-        endwhile
-        if index != char2nr('z')
-                exe 'normal m'.nr2char(index)
-                call HLMarks()
-        endif
-endfunction
-
-function! DelHLMark()
-        let index = char2nr('a')
-        while index < char2nr('z')
-                if line(".") == line("'".nr2char(index))
-                        exe 'delmarks '.nr2char(index)
-                        call HLMarks()
-                        let index = char2nr('z')
-                endif
-                let index = index + 1
-        endwhile
-endfunction
-
-
-" nmap <silent> <Leader>z :call HLMarks()<CR>
-" nmap <silent> <Leader>y :call clearmatches()<CR>
-nmap <silent> <Leader>c :call clearmatches()\|:delmarks a-z<CR>
-nmap <silent> <Leader>m :call AddHLMark()<CR>
-nmap <silent> <Leader>d :call DelHLMark()<CR>
-
-nmap <silent> <Leader>f ['
-nmap <silent> <Leader>b ]'
 
 " ############# toggle color current column #############
-
 "nnoremap <Leader>h :set colorcolumn=virtcol('.')<CR>
 function! ToggleHLCol()
     if &colorcolumn
@@ -335,36 +254,18 @@ endfunction
 
 nnoremap <silent> <Leader>h :call ToggleHLCol()<CR>
 
+" Marks plugin
+let g:showmarks_enable=1
+let g:showmarks_include='abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
+highlight ShowMarksHLl ctermbg=grey
+highlight ShowMarksHLu ctermbg=grey
+
+let g:showmarks_hlline_lower=1
+let g:showmarks_hlline_upper=1
+nmap <silent> <unique> <leader>c :ShowMarksClearAll<cr>
+nmap <silent> <unique> <leader>m :ShowMarksPlaceMark<cr>
 " }}}
 
-"""""""""""""""""""""""""""""""""""""""""""""""""
-" WIPS
-"""""""""""""""""""""""""""""""""""""""""""""""""
 
-
-
-" To get the highlight colors.
-" so $VIMRUNTIME/syntax/hitest.vim
-
-" open all java files in this directory subtree as hidden buffers (so we can
-" search them for autocomplete) argadd **/.java
-
-" Grep behavior replaced with tags TODO: need to auto-make tags file in
-" current directory on open vim.
-"
-" grep in set paths for word under cursor C-i or current path C-o
-" set file types to ignore in vimgrep
-" set wildignore+=bin/**,*.pyc
-" map <C-i> :execute "vimgrep /" . expand("<cword>") . "/j " . paths <Bar> cw<CR>
-" map <C-o> :execute "vimgrep /" . expand("<cword>") . "/j **" <Bar> cw<CR>
-
-" Change where new splits appear.
-" set splitbelow
-" set splitright
-
-" Set up folding in this file.
-"set foldmethod=marker
-"set foldlevel=0
-"set modelines=1
 " This has to be at the end for nice formatting of this file.
 " vim:foldmethod=marker:foldlevel=0
