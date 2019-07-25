@@ -43,6 +43,7 @@ call plug#begin('~/.vim/plugged')
     Plug 'scrooloose/nerdtree'
     Plug 'wesQ3/vim-windowswap'
 
+"    Plug 'easymotion/vim-easymotion'
     " Not so sure.
 "    Plug 'sjl/gundo.vim'
 "    Plug 'tpope/vim-endwise'
@@ -69,7 +70,8 @@ let g:rainbow_active = 1
 autocmd FileType py,go,jl let b:vcm_tab_complete = 'omni'
 set complete+=t
 
-
+" julia-vim
+let g:default_julia_version="devel"
 " }}}
 
 " Manage session {{{
@@ -81,7 +83,9 @@ function! HandleSession(session_name)
         exe ':source ' . a:session_name
     endif
 endfunction
-au VimEnter * call HandleSession(session_name)
+" These line allows it to load syntax highlighting
+au VimEnter * nested call HandleSession(session_name)
+set sessionoptions-=options  " Don't save options
 " }}}
 
 " Tab (space) and indent / fold behavior. {{{
