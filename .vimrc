@@ -74,13 +74,20 @@ set complete+=t
 let g:default_julia_version="devel"
 " }}}
 
+set noswapfile
+
 " Manage session {{{
 let g:session_name = $HOME . '/.vim/sessions/' . join(split(getcwd(), '/') + ['session.vim'], '_')
 function! HandleSession(session_name)
-    if !(filereadable(a:session_name))
-        exe ':Obsess ' . a:session_name
+    let g:vimargs=split( system( "ps -o command= -p " . getpid() ) )
+    if len(g:vimargs) > 1
+        echo ['ARGUMENTS '] + g:vimargs
     else
-        exe ':source ' . a:session_name
+        if !(filereadable(a:session_name))
+            exe ':Obsess ' . a:session_name
+        else
+            exe ':source ' . a:session_name
+        endif
     endif
 endfunction
 " These line allows it to load syntax highlighting
