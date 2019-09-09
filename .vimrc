@@ -79,10 +79,8 @@ set noswapfile
 " Manage session {{{
 let g:session_name = $HOME . '/.vim/sessions/' . join(split(getcwd(), '/') + ['session.vim'], '_')
 function! HandleSession(session_name)
-    let g:vimargs=split( system( "ps -o command= -p " . getpid() ) )
-    if len(g:vimargs) > 1
-        echo ['ARGUMENTS '] + g:vimargs
-    else
+    let a:vimargs=split( system( "ps -o command= -p " . getpid() ) )
+    if len(a:vimargs) <= 1
         if !(filereadable(a:session_name))
             exe ':Obsess ' . a:session_name
         else
