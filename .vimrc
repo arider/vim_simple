@@ -152,8 +152,8 @@ set backspace=indent,eol,start
 
 colorscheme gremlin
 
+set wildmode=longest,list,full     " Need this for the session management trick.
 set wildmenu            " visual autocomplete for command menu.
-set wildmode=full     " Need this for the session management trick.
 set lazyredraw          " redraw only when we need to.
 set showmatch           " highlight matching [{()}]a
 set nowrap
