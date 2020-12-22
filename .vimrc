@@ -31,17 +31,19 @@ endif
 call plug#begin('~/.vim/plugged')
     " ### Favorites ###
     Plug 'junegunn/vim-plug'
-    Plug 'tpope/vim-obsession'
+"   Plug 'tpope/vim-obsession'
+    Plug 'thaerkh/vim-workspace'
     Plug 'roman/golden-ratio'
     Plug 'unblevable/quick-scope'
     Plug 'ajh17/VimCompletesMe'
-    Plug 'zakj/vim-showmarks'
-    Plug 'luochen1990/rainbow'
+"    Plug 'zakj/vim-showmarks'
+"    Plug 'luochen1990/rainbow'
     Plug 'JuliaLang/julia-vim'
+"    Plug 'zah/nim.vim'
 
     " ### Rare but nice ###
-    Plug 'scrooloose/nerdtree'
-    Plug 'wesQ3/vim-windowswap'
+"    Plug 'scrooloose/nerdtree'
+"    Plug 'wesQ3/vim-windowswap'
 
 "    Plug 'easymotion/vim-easymotion'
     " Not so sure.
@@ -57,40 +59,64 @@ call plug#end()
 " toggle gundo -- plugin binding.
 "nnoremap <leader>u :GundoToggle<CR>
 
-"" Nerdtree mapings
-map <C-n> :NERDTreeToggle<CR>
-"""autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
-let NERDTreeIgnore = ['\.pyc$', '\.swp$']
-let NERDTreeShowHidden=1
-
-" Set use rainbow
-let g:rainbow_active = 1
-
 " VimCompletesMe settings
 autocmd FileType py,go,jl let b:vcm_tab_complete = 'omni'
 set complete+=t
-
-" julia-vim
-let g:default_julia_version="devel"
-" }}}
-
 set noswapfile
 
+" Custom keybindings. {{{
+" --- Custom keybindings. ---
+
+" set <Leader> as ; and replace esc with ;j
+let mapleader=';'
+nnoremap <Leader>j <Esc>:w<CR>
+onoremap <Leader>j <Esc>:w<CR>
+inoremap <Leader>j <Esc>`^:w<CR>
+inoremap <Leader>j <Esc>:w<CR>
+" Set how long to wait between multiple character keybindings.
+set timeoutlen=100
+
+" Numbers on the left side.
+set number
+set relativenumber
+" Toggle numbers on and off.
+nnoremap <Leader>n :set nonumber! norelativenumber!<CR>
+
+" line comments
+" au FileType py map <Leader>q 0i#<Leader>j
+" au FileType go map <Leader>q 0i//<Leader>j
+
+"" Make tag file in working directory.
+"command! Mt !ctags -R .
+
+" Navigation between windows.
+" Max out the height of the current split
+" ctrl + w _
+" Max out the width of the current split
+" ctrl + w |
+" Normalize all split sizes, which is very handy when resizing terminal
+" ctrl + w =
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-L> <C-W><C-L>
+nnoremap <C-H> <C-W><C-H>
+
+" Overwrite windowswap default mappings.
+"let g:windowswap_map_keys = 0 "prevent default bindings
+"nnoremap <silent> <leader>w :call WindowSwap#EasyWindowSwap()<CR>
+" }}}
+
 " Manage session {{{
-let g:session_name = $HOME . '/.vim/sessions/' . join(split(getcwd(), '/') + ['session.vim'], '_')
-function! HandleSession(session_name)
-    let a:vimargs=split( system( "ps -o command= -p " . getpid() ) )
-    if len(a:vimargs) <= 1
-        if !(filereadable(a:session_name))
-            exe ':Obsess ' . a:session_name
-        else
-            exe ':source ' . a:session_name
-        endif
-    endif
-endfunction
-" These line allows it to load syntax highlighting
-au VimEnter * nested call HandleSession(session_name)
-set sessionoptions-=options  " Don't save options
+let g:workspace_create_new_tabs = 1
+nnoremap <Leader>s :ToggleWorkspace<CR>
+let g:workspace_session_name = 'Session.vim'
+let g:workspace_session_directory = $HOME . '/.vim/sessions/'
+" Don't load session if arg provided to vim.
+let g:workspace_session_disable_on_args = 0
+" }}}
+
+" julia-vim {{{
+let g:default_julia_version="devel"
 " }}}
 
 " Tab (space) and indent / fold behavior. {{{
@@ -113,28 +139,28 @@ nnoremap <space> za
 
 " Language specific filetype settings. {{{
 " --- Language specific filetype settings. ---
-augroup configgroup
-    " Highlight Class and Function names
-    " Add function call highlighting (not perfect).
-    autocmd BufEnter *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
-    autocmd BufEnter *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
-    autocmd BufEnter *.* syn match    cCustomScope    "::"
-    autocmd BufEnter *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
-    autocmd BufEnter *.* hi link cCustomFunc  Function
-    autocmd BufEnter *.* hi link cCustomClass Function
-
-    autocmd BufWritePost *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
-    autocmd BufWritePost *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
-    autocmd BufWritePost *.* syn match    cCustomScope    "::"
-    autocmd BufWritePost *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
-    autocmd BufWritePost *.* hi link cCustomFunc  Function
-    autocmd BufWritePost *.* hi link cCustomClass Function
-
-""    " Julia settings.
-""    autocmd FileType julia
-""        \ let b:endwise_addition = 'end' |
-""        \ let b:endwise_words = 'module,struct,if,else,while,for,elseif'
-augroup END
+""augroup configgroup
+""    " Highlight Class and Function names
+""    " Add function call highlighting (not perfect).
+""    autocmd BufEnter *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
+""    autocmd BufEnter *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+""    autocmd BufEnter *.* syn match    cCustomScope    "::"
+""    autocmd BufEnter *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+""    autocmd BufEnter *.* hi link cCustomFunc  Function
+""    autocmd BufEnter *.* hi link cCustomClass Function
+""
+""    autocmd BufWritePost *.* syn match    cCustomParen    "(" contains=cParen,cCppParen
+""    autocmd BufWritePost *.* syn match    cCustomFunc     "\w\+\s*(" contains=cCustomParen
+""    autocmd BufWritePost *.* syn match    cCustomScope    "::"
+""    autocmd BufWritePost *.* syn match    cCustomClass    "\w\+\s*::" contains=cCustomScope
+""    autocmd BufWritePost *.* hi link cCustomFunc  Function
+""    autocmd BufWritePost *.* hi link cCustomClass Function
+""
+""""    " Julia settings.
+""""    autocmd FileType julia
+""""        \ let b:endwise_addition = 'end' |
+""""        \ let b:endwise_words = 'module,struct,if,else,while,for,elseif'
+""augroup END
 " }}}
 
 " Misc. {{{
@@ -153,9 +179,9 @@ set backspace=indent,eol,start
 colorscheme gremlin
 
 set wildmode=longest,list,full     " Need this for the session management trick.
-set wildmenu            " visual autocomplete for command menu.
-set lazyredraw          " redraw only when we need to.
-set showmatch           " highlight matching [{()}]a
+set wildmenu                       " visual autocomplete for command menu.
+set lazyredraw                     " redraw only when we need to.
+set showmatch                      " highlight matching [{()}]a
 set nowrap
 
 set autoindent
@@ -203,48 +229,6 @@ set incsearch           " search as characters are entered.
 set smartcase
 " }}}
 
-" Custom keybindings. {{{
-" --- Custom keybindings. ---
-
-" set <Leader> as ; and replace esc with ;j
-let mapleader=';'
-nnoremap <Leader>j <Esc>:w<CR>
-onoremap <Leader>j <Esc>:w<CR>
-inoremap <Leader>j <Esc>`^:w<CR>
-inoremap <Leader>j <Esc>:w<CR>
-" Set how long to wait between multiple character keybindings.
-set timeoutlen=100
-
-" Numbers on the left side.
-set number
-set relativenumber
-" Toggle numbers on and off.
-nnoremap <Leader>n :set nonumber! norelativenumber!<CR>
-
-" line comments
-" au FileType py map <Leader>q 0i#<Leader>j
-" au FileType go map <Leader>q 0i//<Leader>j
-
-" Make tag file in working directory.
-command! Mt !ctags -R .
-
-" Navigation between windows.
-" Max out the height of the current split
-" ctrl + w _
-" Max out the width of the current split
-" ctrl + w |
-" Normalize all split sizes, which is very handy when resizing terminal
-" ctrl + w =
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
-
-" Overwrite windowswap default mappings.
-let g:windowswap_map_keys = 0 "prevent default bindings
-nnoremap <silent> <leader>w :call WindowSwap#EasyWindowSwap()<CR>
-" }}}
-
 " Highlighting stuff {{{
 
 " Highlight all occurences of word under cursor.
@@ -275,6 +259,17 @@ nmap <silent> <unique> <leader>c :ShowMarksClearAll<cr>
 nmap <silent> <unique> <leader>m :ShowMarksPlaceMark<cr>
 " }}}
 
+fun! JumpToDef()
+  if exists("*GotoDefinition_" . &filetype)
+    call GotoDefinition_{&filetype}()
+  else
+    exe "norm! \<C-]>"
+  endif
+endf
+
+"" Jump to tag
+"nn <M-g> :call JumpToDef()<cr>
+"ino <M-g> <esc>:call JumpToDef()<cr>i
 
 " This has to be at the end for nice formatting of this file.
 " vim:foldmethod=marker:foldlevel=0
