@@ -36,11 +36,11 @@ call plug#begin('~/.vim/plugged')
     Plug 'roman/golden-ratio'
     Plug 'unblevable/quick-scope'
     Plug 'ajh17/VimCompletesMe'
-"    Plug 'zakj/vim-showmarks'
+    Plug 'zakj/vim-showmarks'
 "    Plug 'luochen1990/rainbow'
     Plug 'JuliaLang/julia-vim'
 "    Plug 'zah/nim.vim'
-
+    Plug 'FooSoft/vim-argwrap'
     " ### Rare but nice ###
 "    Plug 'scrooloose/nerdtree'
 "    Plug 'wesQ3/vim-windowswap'
@@ -69,12 +69,15 @@ set noswapfile
 
 " set <Leader> as ; and replace esc with ;j
 let mapleader=';'
-nnoremap <Leader>j <Esc>:w<CR>
-onoremap <Leader>j <Esc>:w<CR>
-inoremap <Leader>j <Esc>`^:w<CR>
-inoremap <Leader>j <Esc>:w<CR>
+nnoremap <Leader>j <Esc>:w<CR><Esc>:redraw!<CR>
+onoremap <Leader>j <Esc>:w<CR><Esc>:redraw!<CR>
+inoremap <Leader>j <Esc>`^:w<CR><Esc>:redraw!<CR>
+inoremap <Leader>j <Esc>:w<CR><Esc>:redraw!<CR>
 " Set how long to wait between multiple character keybindings.
 set timeoutlen=100
+
+" Argwrap keybinding.
+nnoremap <silent> <leader>a :ArgWrap<CR>
 
 " Numbers on the left side.
 set number
